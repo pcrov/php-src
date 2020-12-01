@@ -1,5 +1,5 @@
 name: gcov
-on: [workflow_dispatch, push]
+on: push
 
 jobs:
   report:
@@ -16,10 +16,11 @@ jobs:
           ./buildconf
           ./configure --enable-debug --enable-gcov --enable-cli
 
-      - run: make -j2
+      - name: make
+        run: make -j2
 
       - name: test
-        run: make test lcov TESTS=ext/json/tests/
+        run: make test lcov
 
       - name: codecov
         run: bash <(curl -s https://codecov.io/bash)
