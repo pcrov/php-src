@@ -1,0 +1,25 @@
+name: gcov
+on: workflow_dispatch
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: apt
+        run: sudo apt install -y pkg-config build-essential autoconf bison re2c libxml2-dev libsqlite3-dev lcov
+
+      - name: conf
+        run: |
+          ./buildconf
+          ./configure --enable-debug --enable-gcov --enable-cli
+
+      - run: make -j2
+
+      - name: test
+        run: make test lcov TESTS=ext/json/tests/
+
+      - name: codecov
+        run: bash <(curl -s https://codecov.io/bash)
