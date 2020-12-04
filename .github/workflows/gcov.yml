@@ -21,7 +21,7 @@ jobs:
 
       - name: test
         run: make test lcov
-       	continue-on-error: true
+        continue-on-error: true
 
       - name: codecov
         run: bash <(curl -s https://codecov.io/bash)
